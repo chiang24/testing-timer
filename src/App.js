@@ -148,7 +148,7 @@ const App = () => {
               <Input placeholder='请输入小时数字，例如24' />
             </Form.Item> : null
           }
-          <Form.Item name='method' label='计算方式' rules={[{ required: true, message: '计算方式必须' }]}>
+          <Form.Item name='method' label='计算方式' rules={[{ required: true, message: '计算方式不能为空' }]}>
             <Selector
               columns={2}
               options={METHODS}
