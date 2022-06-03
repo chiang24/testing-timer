@@ -89,7 +89,7 @@ const App = () => {
     const _time = moment(time).format('YYYY-MM-DD HH:mm:ss')
     const _method = method?.[0]
 
-    const defalutText = '当前时间有效时间为：'
+    const defalutText = '当前核酸有效时间为：'
 
     let desc = `${defalutText}${_time} - ${result}`
 
