@@ -39,13 +39,6 @@ const App = () => {
         _interval = ~_interval + 1
       }
 
-      if (_interval === -24) {
-        setColor('#ff3141')
-        setResult(undefined)
-        setFrown(true)
-        return
-      }
-
       try {
         setFrown(false)
         setColor('#76c6b8')
