@@ -1,6 +1,7 @@
 {
   "name": "testing-timer",
-  "version": "0.1.0",
+  "author": "maxchiang24@gmail.com",
+  "version": "1.0.0",
   "private": true,
   "homepage": "https://chiang24.github.io/testing-timer",
   "dependencies": {
