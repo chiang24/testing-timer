@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { Form, Button, Selector, Input, DatePicker, Result } from 'antd-mobile'
 import './App.css';
 import { TIME_INTERVAL_ENUMS, METHODS } from './ constants'
@@ -10,6 +10,8 @@ const PLACEHOLDER_ENUMS = {
   et: '结束时间'
 }
 
+const FORMAT_TYPE = 'YYYY-MM-DD HH:mm:ss'
+
 const App = () => {
   const [showCustomInput, setShowCustomInput] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -18,14 +20,27 @@ const App = () => {
   const [result, setResult] = useState()
   const [frown, setFrown] = useState()
   const [color, setColor] = useState('#1677ff')
+  const [now, setNow] = useState(Date.now())
 
   const [form] = Form.useForm()
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const currentTime = moment(now).valueOf()
+      setNow(currentTime + 1000)
+    }, 1000)
+
+
+    return () => {
+      timer && clearInterval(timer)
+    }
+  }, [now])
 
 
   const onFinish = () => {
     form.validateFields().then(() => {
       const { interval, customInterval = 0, method, time } = form.getFieldsValue()
-      const _time = moment(time).format('YYYY-MM-DD HH:mm:ss')
+      const _time = moment(time).format(FORMAT_TYPE)
       const _method = method[0]
       let _interval = +interval[0]
 
@@ -42,7 +57,7 @@ const App = () => {
       try {
         setFrown(false)
         setColor('#76c6b8')
-        setResult(moment(_time).subtract(_interval, 'hour').format('YYYY-MM-DD HH:mm:ss'))
+        setResult(moment(_time).subtract(_interval, 'hour').format(FORMAT_TYPE))
       } catch (e) {
         setColor('#ff3141')
         setResult(undefined)
@@ -79,7 +94,7 @@ const App = () => {
     }
 
     const { method, time } = form.getFieldsValue()
-    const _time = moment(time).format('YYYY-MM-DD HH:mm:ss')
+    const _time = moment(time).format(FORMAT_TYPE)
     const _method = method?.[0]
 
     const defalutText = '当前核酸有效时间为：'
@@ -113,7 +128,6 @@ const App = () => {
         padding: '18px',
         fontWeight: 'bold'
       }}>核酸时效计算器</div>
-
       <div>
         <Form
           form={form}
@@ -163,7 +177,7 @@ const App = () => {
                 precision='minute'
               >
                 {value =>
-                  value ? moment(value).format('YYYY-MM-DD HH:mm:ss') : `请选择${currentPlaceholder}`
+                  value ? moment(value).format(FORMAT_TYPE) : `请选择${currentPlaceholder}`
                 }
               </DatePicker>
             </Form.Item> : null
@@ -177,6 +191,9 @@ const App = () => {
           title={result || '暂无'}
           description={description}
         />
+        <div style={{ color: '#d9d9d9' }}>
+          *当前时间：{moment(now).format(FORMAT_TYPE)}
+        </div>
       </div>
     </div>
   );
